@@ -14,7 +14,7 @@ def get_or_set_order_session(request):
         except Order.DoesNotExist:
             order = Order()
             order.save()
-            request.session['orde_id'] = order.id
+            request.session['order_id'] = order.id
 
     if request.user.is_authenticated and order.user is None:
         order.user = request.user
