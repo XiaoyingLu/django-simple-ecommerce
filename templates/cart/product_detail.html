@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 <div class="bg-light py-3">
@@ -23,6 +25,11 @@
                 <div class="block-4-text p-4">
                     <h2 class="text-black">{{ product.title }}</h2>
                     <p>{{ product.description }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-sm btn-primary mt-3">Add to cart</button>
+                    </form>
                 </div>
             </div>
         </div>
