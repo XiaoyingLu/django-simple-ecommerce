@@ -133,6 +133,9 @@ STATIC_ROOT = BASE_DIR / 'static_root'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+PAYPAL_CLIENT_ID = env('PAYPAL_SANDBOX_CLIENT_ID')
+PAYPAL_SECRET_KEY = env('PAYPAL_SANDBOX_SECRET_KEY')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -161,3 +164,6 @@ if DEBUG is False:
             'PORT': ''
         }
     }
+
+    PAYPAL_CLIENT_ID = env('PAYPAL_LIVE_CLIENT_ID')
+    PAYPAL_SECRET_KEY = env('PAYPAL_LIVE_SECRET_KEY')
