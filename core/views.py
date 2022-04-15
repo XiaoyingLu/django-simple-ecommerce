@@ -2,8 +2,10 @@ from django.shortcuts import reverse
 from django.conf import settings
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from .form import ContactForm
+from cart.models import Order
 
 
 class HomeView(generic.TemplateView):
@@ -37,3 +39,14 @@ class ContactView(generic.FormView):
             recipient_list=[settings.NOTIFY_EMAIL]
         )
         return super(ContactView, self).form_valid(form)
+
+
+class ProfileView(generic.TemplateView):
+    template_name = "profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context.update({
+            "orders": Order.objects.filter(user=self.request.user, ordered=True)
+        })
+        return context
