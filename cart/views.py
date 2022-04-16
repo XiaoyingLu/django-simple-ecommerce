@@ -20,7 +20,7 @@ class ProductListView(generic.ListView):
         category = self.request.GET.get('category', None)
         if category:
             qs = qs.filter(Q(primary_category__name=category) |
-                           Q(secondary_category__name=category)).distinct()
+                           Q(secondary_categories__name=category)).distinct()
         return qs
 
     def get_context_data(self, **kwargs):
