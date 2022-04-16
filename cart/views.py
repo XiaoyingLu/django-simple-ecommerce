@@ -6,14 +6,29 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, reverse, redirect
 from django.views import generic
-from .models import OrderItem, Product, Address, Payment, Order
+from django.db.models import Q
+from .models import Category, OrderItem, Product, Address, Payment, Order
 from .utils import get_or_set_order_session
 from .forms import AddToCartForm, AddressForm
 
 
 class ProductListView(generic.ListView):
     template_name = 'cart/product_list.html'
-    queryset = Product.objects.all()
+
+    def get_queryset(self):
+        qs = Product.objects.all()
+        category = self.request.GET.get('category', None)
+        if category:
+            qs = qs.filter(Q(primary_category__name=category) |
+                           Q(secondary_category__name=category)).distinct()
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context.update({
+            "categories": Category.objects.values('name')
+        })
+        return context
 
 
 class ProductDetailView(generic.FormView):
